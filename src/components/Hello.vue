@@ -3,9 +3,9 @@
     <img src="../assets/baozou01.jpg">
     <h1>{{ msg }}</h1>
     <h2>Start Simulator(Google)</h2>
-    <router-link to="/interview/google">
-      <el-button type="primary">Start Here</el-button>
-    </router-link>
+
+      <v-btn dark default><router-link to="/interview/google">Start Here</router-link></v-btn>
+
   </div>
 </template>
 

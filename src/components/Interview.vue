@@ -2,23 +2,32 @@
   <div class="interview">
     <el-menu theme="dark" class="el-menu-demo" mode="horizontal" @select="handleSelect">
       <el-menu-item index="1">
-        <router-link to="/">Home</router-link>
+        <router-link to="/"><icon name="home"></icon></router-link>
       </el-menu-item>
-      <el-menu-item index="2"><i class="el-icon-caret-right"></i></el-menu-item>
-      <el-menu-item index="3"><i class="el-icon-close"></i></el-menu-item>
-      <el-menu-item index="4" class="floatright"><i class="el-icon-setting"></i></el-menu-item>
+      <el-menu-item index="2"><icon name="play"></icon></el-menu-item>
+      <el-menu-item index="3"><icon name="stop"></icon></el-menu-item>
+      <el-menu-item index="4" class="floatright"><icon name="cog"></icon></el-menu-item>
     </el-menu>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
+/* eslint-disable */
 export default {
   name: 'interview',
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      switch (key) {
+        case "2":
+          this.$store.bus.$emit('interview-play', 1);
+          break;
+        case "3":
+          this.$store.bus.$emit('interview-stop', 1);
+          break;
+        default:
+          console.log(key, keyPath);
+      }
     },
   },
   data() {

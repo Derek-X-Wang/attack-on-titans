@@ -1,6 +1,6 @@
 <template>
   <div class="dialog">
-    <el-dialog
+    <!-- <el-dialog
       :title="title"
       :visible.sync="visiable"
       size="tiny">
@@ -8,7 +8,7 @@
       <span slot="footer" class="dialog-footer">
         <slot></slot>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

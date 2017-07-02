@@ -1,22 +1,51 @@
 <template>
-  <div class="interview">
-    <el-menu theme="dark" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="1">
-        <router-link to="/"><icon name="home"></icon></router-link>
-      </el-menu-item>
-      <el-menu-item index="2"><icon name="play"></icon></el-menu-item>
-      <el-menu-item index="3"><icon name="stop"></icon></el-menu-item>
-      <el-menu-item index="4" class="floatright"><icon name="cog"></icon></el-menu-item>
-    </el-menu>
+  <v-app id="interview">
+    <!-- <v-dialog v-model="dialog">
+      <v-card>
+        <v-card-row>
+          <v-card-title>Use Google's location service?</v-card-title>
+        </v-card-row>
+        <v-card-row>
+          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+        </v-card-row>
+        <v-card-row actions>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
+        </v-card-row>
+      </v-card>
+    </v-dialog> -->
+    <v-toolbar class="elevation-0" light>
+      <v-toolbar-title class="hidden-sm-and-down">Attack on Titans</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-toolbar-item @click.native="play"><v-icon light>play_arrow</v-icon></v-toolbar-item>
+        <v-toolbar-item @click.native="pause" slot="activator"><v-icon light>pause</v-icon></v-toolbar-item>
+        <v-toolbar-item @click.native.stop="stop"><v-icon light>stop</v-icon></v-toolbar-item>
+      </v-toolbar-items>
+    </v-toolbar>
     <router-view></router-view>
-  </div>
+  </v-app>
 </template>
 
 <script>
 /* eslint-disable */
 export default {
   name: 'interview',
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   methods: {
+    play() {
+      console.log("hahahaha");
+    },
+    pause() {
+      //this.dialog = true;
+    },
+    stop() {
+      this.dialog = true;
+    },
     handleSelect(key, keyPath) {
       switch (key) {
         case "2":
@@ -29,12 +58,7 @@ export default {
           console.log(key, keyPath);
       }
     },
-  },
-  data() {
-    return {
-      msg: 'Tech Interview Simulation App',
-    };
-  },
+  }
 };
 </script>
 
@@ -48,8 +72,8 @@ a {
   text-decoration: none;
 }
 
-.interview {
-  height: 100%;
+#interview {
+  height: inherit;
 }
 
 .floatright {

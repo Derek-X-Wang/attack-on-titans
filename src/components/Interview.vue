@@ -21,8 +21,8 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-toolbar-item @click.native="play"><v-icon light>play_arrow</v-icon></v-toolbar-item>
-        <v-toolbar-item @click.native="pause" slot="activator"><v-icon light>pause</v-icon></v-toolbar-item>
-        <v-toolbar-item @click.native.stop="stop"><v-icon light>stop</v-icon></v-toolbar-item>
+        <v-toolbar-item @click.native="pause"><v-icon light>pause</v-icon></v-toolbar-item>
+        <v-toolbar-item @click.native="stop"><v-icon light>stop</v-icon></v-toolbar-item>
       </v-toolbar-items>
     </v-toolbar>
     <router-view></router-view>
@@ -41,25 +41,19 @@ export default {
   },
   methods: {
     play() {
-      console.log("hahahaha");
+      this.$store.dispatch({
+        type: 'startInterview',
+      });
     },
     pause() {
-      this.alert = true;
+      this.$store.dispatch({
+        type: 'pauseInterview',
+      });
     },
     stop() {
-      this.dialog = true;
-    },
-    handleSelect(key, keyPath) {
-      switch (key) {
-        case "2":
-          this.$store.bus.$emit('interview-play', 1);
-          break;
-        case "3":
-          this.$store.bus.$emit('interview-stop', 1);
-          break;
-        default:
-          console.log(key, keyPath);
-      }
+      this.$store.dispatch({
+        type: 'stopInterview',
+      });
     },
   }
 };

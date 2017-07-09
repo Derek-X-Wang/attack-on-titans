@@ -4,17 +4,16 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import App from './App';
 import router from './router';
-import Store from './store';
+import store from './store';
 
 Vue.use(Vuetify);
-
-Vue.prototype.$store = Store;
 
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App },

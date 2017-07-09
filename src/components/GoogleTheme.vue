@@ -11,6 +11,7 @@
 <script>
 /* eslint-disable */
 import * as Artyom from 'artyom.js';
+import * as types from '../store/mutation-types';
 let artyom = Artyom.ArtyomBuilder.getInstance();
 
 export default {
@@ -43,6 +44,9 @@ export default {
       console.log("stopppppping");
     },
   },
+  computed: {
+
+  },
   mounted() {
     let that = this;
     setTimeout(function() {
@@ -51,8 +55,19 @@ export default {
   },
   created() {
     // Register event of toolbar
-    this.$store.bus.$on('interview-play', this.play);
-    this.$store.bus.$on('interview-stop', this.stop);
+    this.$store.subscribe((mutation, state) => {
+      switch (mutation.type) {
+        case types.INTERVIEW_START:
+          this.play();
+          break;
+        case types.INTERVIEW_PAUSE:
+          this.stop();
+          break;
+        case types.INTERVIEW_STOP:
+          this.stop();
+          break;
+      }
+    })
   }
 };
 </script>

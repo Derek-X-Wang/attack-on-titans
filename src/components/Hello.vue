@@ -36,7 +36,7 @@
       <!-- <a href="https://icons8.com">Icons by Icons8</a>
       <a href="https://unsplash.com/search/code?photo=fPkvU7RDmCo">Photo by Caspar Rubin</a> -->
       <v-spacer></v-spacer>
-      <div>Version {{version}} Derek.X.W © {{ new Date().getFullYear() }}</div>
+      <div>Version {{version}} | Derek.X.W © {{ new Date().getFullYear() }}</div>
     </v-footer>
   </v-app>
 </template>

@@ -1,21 +1,23 @@
 <template>
   <v-app id="interview">
-    <!-- <v-dialog v-model="dialog">
-      <v-card>
-        <v-card-row>
-          <v-card-title>Use Google's location service?</v-card-title>
-        </v-card-row>
-        <v-card-row>
+    <v-layout row justify-center style="position: relative;">
+      <v-dialog v-model="dialog" lazy absolute>
+        <v-card>
+          <v-card-title>
+            <div class="headline">Use Google's location service?</div>
+          </v-card-title>
           <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-        </v-card-row>
-        <v-card-row actions>
           <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
           <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
-        </v-card-row>
-      </v-card>
-    </v-dialog> -->
+        </v-card>
+      </v-dialog>
+    </v-layout>
     <v-toolbar class="elevation-0" light>
-      <v-toolbar-title class="hidden-sm-and-down">Attack on Titans</v-toolbar-title>
+      <router-link to="/">
+        <v-toolbar-title class="hidden-sm-and-down">
+            Attack on Titans
+        </v-toolbar-title>
+      </router-link>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-toolbar-item @click.native="play"><v-icon light>play_arrow</v-icon></v-toolbar-item>
@@ -34,6 +36,7 @@ export default {
   data() {
     return {
       dialog: false,
+      alert: false
     };
   },
   methods: {
@@ -41,7 +44,7 @@ export default {
       console.log("hahahaha");
     },
     pause() {
-      //this.dialog = true;
+      this.alert = true;
     },
     stop() {
       this.dialog = true;

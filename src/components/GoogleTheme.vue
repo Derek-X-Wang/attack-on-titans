@@ -1,29 +1,29 @@
 <template>
   <div class="google">
+    <v-alert warning dismissible v-model="alert">
+      Oooops! Your browser doesn't support google speech synthesis!
+    </v-alert>
     <iframe width="100%" height="100%" frameborder='0' src='https://docs.google.com/document/d/1RB4im1WpR-BOaXCZv-7gC2na8rintoRapz3iXpqcXy8/edit?usp=sharing'>
     </iframe>
-    <!-- <mdialog :title="dialog.title" :text="dialog.text" :visiable="dialog.visiable">
-      <el-button @click="dialog.visiable = false">Back to home page</el-button>
-      <el-button type="primary" @click="dialog.visiable = false">It's Okay</el-button>
-    </mdialog> -->
   </div>
 </template>
 
 <script>
 /* eslint-disable */
 import * as Artyom from 'artyom.js';
-import Dialog from './Dialog.vue';
 let artyom = Artyom.ArtyomBuilder.getInstance();
 
 export default {
   name: 'google',
-  components: {
-    mdialog: Dialog,
+  data() {
+    return {
+      alert: false,
+    };
   },
   methods: {
     startArtyom() {
       if (!artyom.speechSupported) {
-        this.dialog.visiable = true;
+        this.alert = true;
         return;
       }
       artyom.initialize({
@@ -53,17 +53,7 @@ export default {
     // Register event of toolbar
     this.$store.bus.$on('interview-play', this.play);
     this.$store.bus.$on('interview-stop', this.stop);
-  },
-  data() {
-    return {
-      dialog: {
-        visiable: false,
-        title: "Warning",
-        text: "Oooops! Your browser doesn't support google speech synthesis. Please try to use the last version of Chrome!",
-      },
-      dialogVisible: false,
-    };
-  },
+  }
 };
 </script>
 
@@ -75,5 +65,9 @@ h1, h2 {
 
 .google {
   height: 100%;
+}
+
+.alert {
+  margin: 0;
 }
 </style>

@@ -14,4 +14,6 @@ export default {
 @import '../node_modules/vuetify/src/stylus/main'
 #app
   height: inherit
+.height-inherit
+  height: inherit
 </style>

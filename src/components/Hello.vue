@@ -11,7 +11,7 @@
       <v-container fluid>
         <v-layout column align-center>
           <h3>Simulate Your Phone Screen</h3>
-          <p>This app attempt to simualte big tech companies' phone screen, as real as possible.</p>
+          <p>This app attempts to simualte big tech companies' phone screen, as real as possible.</p>
           <v-layout row>
               <v-layout column align-center>
                 <img class="company-icons" src="../assets/icons8-Google-400.png">
@@ -36,17 +36,19 @@
       <!-- <a href="https://icons8.com">Icons by Icons8</a>
       <a href="https://unsplash.com/search/code?photo=fPkvU7RDmCo">Photo by Caspar Rubin</a> -->
       <v-spacer></v-spacer>
-      <div>Derek.X.W © {{ new Date().getFullYear() }}</div>
+      <div>Version {{version}} Derek.X.W © {{ new Date().getFullYear() }}</div>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { version } from './../../package.json';
+
 export default {
   name: 'hello',
   data() {
     return {
-      msg: 'Tech Interview Simulation App',
+      version,
     };
   },
 };

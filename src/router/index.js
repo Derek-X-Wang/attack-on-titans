@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Container from '@/components/Container';
 import Hello from '@/components/Hello';
+import Credits from '@/components/Credits';
 import Interview from '@/components/Interview';
 import GoogleTheme from '@/components/GoogleTheme';
 
@@ -10,8 +12,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello,
+      name: 'Website',
+      component: Container,
+      children: [
+        {
+          path: '',
+          component: Hello,
+        },
+        {
+          path: 'credits',
+          component: Credits,
+        },
+      ],
     },
     {
       path: '/interview',

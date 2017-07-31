@@ -5,7 +5,7 @@
     <v-layout row>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Google-400.png">
-          <v-btn primary light router to="/interview/google">Start Google</v-btn>
+          <v-btn primary light @click.native.stop="startGoogle">Start Google</v-btn>
         </v-layout>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Facebook-400.png">
@@ -16,15 +16,68 @@
           <v-btn primary light disabled router to="/interview/microsoft">Start Microsoft</v-btn>
         </v-layout>
     </v-layout>
+    <!-- TODO: solve srollbar padding issue -->
+    <v-dialog hide-overlay v-model="dialog.open">
+      <v-card>
+        <v-card-row>
+          <v-card-title>{{dialog.headline}}</v-card-title>
+        </v-card-row>
+        <v-card-row>
+          <v-card-text>{{dialog.text}}</v-card-text>
+        </v-card-row>
+        <v-card-row actions>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog.agree">Agree</v-btn>
+        </v-card-row>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
 <script>
+/* eslint no-console: 0 */
+import google from '../simulation/google';
+
 export default {
   name: 'hello',
   data() {
     return {
+      dialog: {
+        open: false,
+        headline: 'Placeholder',
+        text: 'Placeholder',
+        agree() {
+          console.log('user agreed');
+        },
+      },
     };
+  },
+  methods: {
+    startGoogle() {
+      this.dialog.open = true;
+      this.dialog.headline = 'Google Account!';
+      this.dialog.text = 'Google uses google doc. This app will edit your doc. It needs your authorization.';
+      const that = this;
+      // const gapi = window.gapi;
+      this.dialog.agree = () => {
+        console.log('user agreed!!!!');
+        that.dialog.open = false;
+        // TODO: bad structure, re-structure needed
+        google.client.loadGapiClient(() => {
+          google.client.initGapiClient().then(() => {
+            google.client.setSignedInListener((isSignedIn) => {
+              if (isSignedIn) {
+                console.log('is signed in');
+                // google.client.callScriptFunction();
+              } else {
+                console.log('is not signed in');
+              }
+            });
+            google.client.authorize();
+          });
+        });
+      };
+    },
   },
 };
 </script>

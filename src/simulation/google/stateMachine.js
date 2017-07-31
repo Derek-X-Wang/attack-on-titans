@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 import * as StateMachine from 'javascript-state-machine';
 
 const fsm = new StateMachine({
@@ -10,10 +11,10 @@ const fsm = new StateMachine({
     { name: 'finish', from: 'validation', to: 'ending' },
     { name: 'stop', from: 'ending', to: 'idle' },
   ],
-  data(color) {
+  data() {
     return {
       question: 0,
-    }
+    };
   },
   methods: {
     onReady() { console.log('I melted'); },

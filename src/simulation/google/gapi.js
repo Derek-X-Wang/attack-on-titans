@@ -19,7 +19,7 @@ const SCRIPT_ID = 'MS4m4qtB1EeZd7L4cqfVOZzVqZDkFptAh';
  *  Sign in the user upon button click.
  */
 function authorize() {
-  gapi.auth2.getAuthInstance().signIn();
+  return Promise.resolve(gapi.auth2.getAuthInstance().signIn());
 }
 
 /**

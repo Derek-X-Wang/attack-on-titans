@@ -60,20 +60,26 @@ export default {
       const that = this;
       // const gapi = window.gapi;
       this.dialog.agree = () => {
-        console.log('user agreed!!!!');
+        console.log('user agreed');
         that.dialog.open = false;
         // TODO: bad structure, re-structure needed
         google.client.loadGapiClient(() => {
           google.client.initGapiClient().then(() => {
-            google.client.setSignedInListener((isSignedIn) => {
-              if (isSignedIn) {
-                console.log('is signed in');
-                // google.client.callScriptFunction();
+            google.client.authorize().then(() => {
+              console.log('is signed in');
+              google.client.callScriptFunction();
+            }).catch((error) => {
+              if (error && error.error === 'popup_blocked_by_browser') {
+                // A popup has been blocked by the browser
+                that.dialog.open = true;
+                that.dialog.headline = 'Popup blocked!';
+                that.dialog.text = 'Please enable popup for this site.';
+                this.dialog.agree = () => { that.dialog.open = false; };
               } else {
-                console.log('is not signed in');
+                // some other error
+                console.log(error);
               }
             });
-            google.client.authorize();
           });
         });
       };

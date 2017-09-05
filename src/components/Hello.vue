@@ -26,8 +26,27 @@
           <v-card-text>{{dialog.text}}</v-card-text>
         </v-card-row>
         <v-card-row actions>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog.open = false">Disagree</v-btn>
           <v-btn class="green--text darken-1" flat="flat" @click.native="dialog.agree">Agree</v-btn>
+        </v-card-row>
+      </v-card>
+    </v-dialog>
+    <!-- TODO: solve srollbar padding issue -->
+    <v-dialog hide-overlay v-model="createDocDialog.open">
+      <v-card>
+        <v-card-row>
+          <v-card-title>{{createDocDialog.headline}}</v-card-title>
+        </v-card-row>
+        <v-card-row class="pl-3">
+          <v-text-field v-model="createDocDialog.text"
+              name="google-doc-name"
+              label="Document Name"
+              single-line
+              prepend-icon="insert_drive_file"></v-text-field>
+        </v-card-row>
+        <v-card-row actions>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="createDocDialog.open = false">Cancel</v-btn>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="onGoogleDocCreate">Create</v-btn>
         </v-card-row>
       </v-card>
     </v-dialog>
@@ -50,15 +69,20 @@ export default {
           console.log('user agreed');
         },
       },
+      createDocDialog: {
+        open: false,
+        headline: 'Create a Google Doc',
+        text: '',
+      },
     };
   },
   methods: {
     startGoogle() {
+      console.log('startGoogle');
       this.dialog.open = true;
       this.dialog.headline = 'Google Account!';
       this.dialog.text = 'Google uses google doc. This app will edit your doc. It needs your authorization.';
       const that = this;
-      // const gapi = window.gapi;
       this.dialog.agree = () => {
         console.log('user agreed');
         that.dialog.open = false;
@@ -66,8 +90,7 @@ export default {
         google.client.loadGapiClient(() => {
           google.client.initGapiClient().then(() => {
             google.client.authorize().then(() => {
-              console.log('is signed in');
-              google.client.callScriptFunction();
+              that.createDocDialog.open = true;
             }).catch((error) => {
               if (error && error.error === 'popup_blocked_by_browser') {
                 // A popup has been blocked by the browser
@@ -83,6 +106,12 @@ export default {
           });
         });
       };
+    },
+    onGoogleDocCreate() {
+      console.log('user agreed, create doc');
+      google.client.createDocAndGetLink(this.createDocDialog.text);
+      this.createDocDialog.open = false;
+      // this.$router.push('interview/google');
     },
   },
 };

@@ -11,7 +11,7 @@ const DISCOVERY_DOCS = ['https://script.googleapis.com/$discovery/rest?version=v
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/drive';
+const SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/documents';
 
 const SCRIPT_ID = 'MS4m4qtB1EeZd7L4cqfVOZzVqZDkFptAh';
 
@@ -27,6 +27,10 @@ function authorize() {
  */
 function signout() {
   gapi.auth2.getAuthInstance().signOut();
+}
+
+function isSignedIn() {
+  gapi.auth2.getAuthInstance().isSignedIn.get();
 }
 
 function initGapiClient() {
@@ -100,11 +104,60 @@ function callScriptFunction() {
   });
 }
 
+/**
+ * Call app script to create document and get embeded link
+ */
+function createDocAndGetLink(docName) {
+  console.log(`createDocAndGetLink: ${docName}`);
+  gapi.client.script.scripts.run({
+    scriptId: SCRIPT_ID,
+    resource: {
+      function: 'createDocAndShare',
+      parameters: [docName],
+    },
+  }).then((resp) => {
+    const result = resp.result;
+    if (result.error && result.error.status) {
+      // The API encountered a problem before the script
+      // started executing.
+      console.log('Error calling API:');
+      console.log(result);
+    } else if (result.error) {
+      // The API executed, but the script returned an error.
+
+      // Extract the first (and only) set of error details.
+      // The values of this object are the script's 'errorMessage' and
+      // 'errorType', and an array of stack trace elements.
+      const error = result.error.details[0];
+      console.log(`Script error message: ${error.errorMessage}`);
+
+      if (error.scriptStackTraceElements) {
+        // There may not be a stacktrace if the script didn't start
+        // executing.
+        console.log(`Script error stacktrace: ${error.scriptStackTraceElements}`);
+      }
+    } else {
+      const folderSet = result.response.result;
+      console.log(folderSet);
+    }
+  });
+}
+
+/**
+ * Call app script to modify doc
+ */
+function insertText() {
+
+}
+
 export default {
   authorize,
   signout,
+  isSignedIn,
   loadGapiClient,
   initGapiClient,
   setSignedInListener,
   callScriptFunction,
+  createDocAndGetLink,
+  insertText,
 };

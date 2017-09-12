@@ -31,8 +31,10 @@ export default new Router({
       component: Interview,
       children: [
         {
-          path: 'google',
+          path: 'google/:id',
+          name: 'google',
           component: GoogleTheme,
+          props: true,
         },
       ],
     },

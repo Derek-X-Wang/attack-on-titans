@@ -7,13 +7,28 @@ const gapi = window.gapi;
 const CLIENT_ID = '859895141676-u1ffb52alfhrc00kgqelef579avkpaqt.apps.googleusercontent.com';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
-const DISCOVERY_DOCS = ['https://script.googleapis.com/$discovery/rest?version=v1'];
+const DISCOVERY_DOCS = ['https://script.googleapis.com/$discovery/rest?version=v1', 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 const SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/documents';
 
 const SCRIPT_ID = 'MS4m4qtB1EeZd7L4cqfVOZzVqZDkFptAh';
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+ */
+function loadGapiClient(callback) {
+  gapi.load('client:auth2', callback);
+}
+
+function initGapiClient() {
+  return gapi.client.init({
+    discoveryDocs: DISCOVERY_DOCS,
+    clientId: CLIENT_ID,
+    scope: SCOPES,
+  });
+}
 
 /**
  *  Sign in the user upon button click.
@@ -33,23 +48,8 @@ function isSignedIn() {
   gapi.auth2.getAuthInstance().isSignedIn.get();
 }
 
-function initGapiClient() {
-  return gapi.client.init({
-    discoveryDocs: DISCOVERY_DOCS,
-    clientId: CLIENT_ID,
-    scope: SCOPES,
-  });
-}
-
 function setSignedInListener(listener) {
   gapi.auth2.getAuthInstance().isSignedIn.listen(listener);
-}
-
-/**
- *  On load, called to load the auth2 library and API client library.
- */
-function loadGapiClient(callback) {
-  gapi.load('client:auth2', callback);
 }
 
 /**
@@ -150,6 +150,25 @@ function insertText() {
 
 }
 
+function createInterviewDoc(docName) {
+  const docs = gapi.client.drive.files;
+  return docs.create({
+    name: docName,
+    mimeType: 'application/vnd.google-apps.document',
+  });
+}
+
+function publishInterviewDoc(id) {
+  const drive = gapi.client.drive;
+  return drive.revisions.update({
+    fileId: id,
+    revisionId: 1,
+  }, {
+    published: true, // <-- This is where the magic happens!
+    publishAuto: true,
+  });
+}
+
 export default {
   authorize,
   signout,
@@ -159,5 +178,7 @@ export default {
   setSignedInListener,
   callScriptFunction,
   createDocAndGetLink,
+  createInterviewDoc,
+  publishInterviewDoc,
   insertText,
 };

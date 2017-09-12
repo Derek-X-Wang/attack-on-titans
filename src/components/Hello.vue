@@ -109,7 +109,16 @@ export default {
     },
     onGoogleDocCreate() {
       console.log('user agreed, create doc');
-      google.client.createDocAndGetLink(this.createDocDialog.text);
+      // google.client.createDocAndGetLink(this.createDocDialog.text);
+      google.client.createInterviewDoc(this.createDocDialog.text).then((response) => {
+        const id = response.result.id;
+        google.client.publishInterviewDoc(id).then(() => {
+          console.log('After publish...');
+          const iframe = `<iframe src="https://docs.google.com/document/d/${id}/pubhtml?widget=true&headers=false&embedded=true"></iframe>`;
+          console.log(iframe);
+          this.$router.push({ name: 'google', params: { id } });
+        });
+      });
       this.createDocDialog.open = false;
       // this.$router.push('interview/google');
     },

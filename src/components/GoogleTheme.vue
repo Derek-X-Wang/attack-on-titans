@@ -3,7 +3,7 @@
     <v-alert warning dismissible v-model="alert">
       Oooops! Your browser doesn't support google speech synthesis!
     </v-alert>
-    <iframe width="100%" height="100%" frameborder='0' src='https://docs.google.com/document/d/1RB4im1WpR-BOaXCZv-7gC2na8rintoRapz3iXpqcXy8/edit?usp=sharing'>
+    <iframe width="100%" height="100%" frameborder='0' :src='url'>
     </iframe>
   </div>
 </template>
@@ -13,9 +13,11 @@
 import * as Artyom from 'artyom.js';
 import * as types from '../store/mutation-types';
 let artyom = Artyom.ArtyomBuilder.getInstance();
+import google from '../simulation/google';
 
 export default {
   name: 'google',
+  props: ['id'],
   data() {
     return {
       alert: false,
@@ -38,16 +40,21 @@ export default {
       // intro, speech and paste text to google doc
       // start counting time, speech and paste #1 question to google doc
       // next question
-      console.log("sdsdsdsds");
+      // google.client.callScriptFunction();
+      console.log(this.id);
     },
     stop() {
       console.log("stopppppping");
     },
   },
   computed: {
-
+    url() {
+      const res = `https://docs.google.com/document/d/${this.id}/edit?usp=sharing`;
+      return res;
+    }
   },
   mounted() {
+    console.log(`user login is ${window.gapi.auth2.getAuthInstance().isSignedIn.get()}`)
     let that = this;
     setTimeout(function() {
       that.startArtyom();

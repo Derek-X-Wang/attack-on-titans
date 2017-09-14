@@ -1,5 +1,7 @@
 /* eslint no-console: 0 */
 // eslint-disable-next-line no-use-before-define
+import DriveService from './drive.service';
+import LoginService from './login.service';
 // import gapi from 'googleapis';
 const gapi = window.gapi;
 
@@ -7,178 +9,61 @@ const gapi = window.gapi;
 const CLIENT_ID = '859895141676-u1ffb52alfhrc00kgqelef579avkpaqt.apps.googleusercontent.com';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
-const DISCOVERY_DOCS = ['https://script.googleapis.com/$discovery/rest?version=v1', 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 const SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/documents';
 
-const SCRIPT_ID = 'MS4m4qtB1EeZd7L4cqfVOZzVqZDkFptAh';
+window.loginService = new LoginService(CLIENT_ID, SCOPES, DISCOVERY_DOCS);
+window.driveService = new DriveService();
 
-/**
- *  On load, called to load the auth2 library and API client library.
- */
-function loadGapiClient(callback) {
-  gapi.load('client:auth2', callback);
-}
+const login = window.loginService;
+const drive = window.driveService;
 
-function initGapiClient() {
-  return gapi.client.init({
-    discoveryDocs: DISCOVERY_DOCS,
-    clientId: CLIENT_ID,
-    scope: SCOPES,
+function initGapi(updateAuthStatus) {
+  gapi.load('client:auth2', () => {
+    login.initClient(updateAuthStatus);
   });
 }
 
+function signIn() {
+  login.signIn();
+}
+
+function signOut() {
+  login.signOut();
+}
+
 /**
- *  Sign in the user upon button click.
+ *  Sign in with promise
  */
 function authorize() {
   return Promise.resolve(gapi.auth2.getAuthInstance().signIn());
 }
 
-/**
- *  Sign out the user upon button click.
- */
-function signout() {
-  gapi.auth2.getAuthInstance().signOut();
-}
-
 function isSignedIn() {
-  gapi.auth2.getAuthInstance().isSignedIn.get();
+  let status = null;
+  if (gapi.auth2) {
+    status = gapi.auth2.getAuthInstance().isSignedIn.get();
+  }
+  return status;
 }
 
-function setSignedInListener(listener) {
-  gapi.auth2.getAuthInstance().isSignedIn.listen(listener);
-}
-
-/**
- * Load the API and make an API call.  Display the results on the screen.
- */
-function callScriptFunction() {
-  // Call the Execution API run method
-  //   'scriptId' is the URL parameter that states what script to run
-  //   'resource' describes the run request body (with the function name
-  //              to execute)
-  gapi.client.script.scripts.run({
-    scriptId: SCRIPT_ID,
-    resource: {
-      function: 'getFoldersUnderRoot',
-    },
-  }).then((resp) => {
-    const result = resp.result;
-    if (result.error && result.error.status) {
-      // The API encountered a problem before the script
-      // started executing.
-      console.log('Error calling API:');
-      console.log(result);
-    } else if (result.error) {
-      // The API executed, but the script returned an error.
-
-      // Extract the first (and only) set of error details.
-      // The values of this object are the script's 'errorMessage' and
-      // 'errorType', and an array of stack trace elements.
-      const error = result.error.details[0];
-      console.log(`Script error message: ${error.errorMessage}`);
-
-      if (error.scriptStackTraceElements) {
-        // There may not be a stacktrace if the script didn't start
-        // executing.
-        console.log(`Script error stacktrace: ${error.scriptStackTraceElements}`);
-      }
-    } else {
-      const folderSet = result.response.result;
-      // The structure of the result will depend upon what the Apps
-      // Script function returns. Here, the function returns an Apps
-      // Script Object with String keys and values, and so the result
-      // is treated as a JavaScript object (folderSet).
-      if (Object.keys(folderSet).length === 0) {
-        console.log('No folders returned!');
-      } else {
-        console.log('Folders under your root folder:');
-        Object.keys(folderSet).forEach((id) => {
-          console.log(`\t${folderSet[id]} (${id}) `);
-        });
-      }
-    }
-  });
-}
-
-/**
- * Call app script to create document and get embeded link
- */
-function createDocAndGetLink(docName) {
-  console.log(`createDocAndGetLink: ${docName}`);
-  gapi.client.script.scripts.run({
-    scriptId: SCRIPT_ID,
-    resource: {
-      function: 'createDocAndShare',
-      parameters: [docName],
-    },
-  }).then((resp) => {
-    const result = resp.result;
-    if (result.error && result.error.status) {
-      // The API encountered a problem before the script
-      // started executing.
-      console.log('Error calling API:');
-      console.log(result);
-    } else if (result.error) {
-      // The API executed, but the script returned an error.
-
-      // Extract the first (and only) set of error details.
-      // The values of this object are the script's 'errorMessage' and
-      // 'errorType', and an array of stack trace elements.
-      const error = result.error.details[0];
-      console.log(`Script error message: ${error.errorMessage}`);
-
-      if (error.scriptStackTraceElements) {
-        // There may not be a stacktrace if the script didn't start
-        // executing.
-        console.log(`Script error stacktrace: ${error.scriptStackTraceElements}`);
-      }
-    } else {
-      const folderSet = result.response.result;
-      console.log(folderSet);
-    }
-  });
-}
-
-/**
- * Call app script to modify doc
- */
-function insertText() {
-
-}
-
-function createInterviewDoc(docName) {
-  const docs = gapi.client.drive.files;
-  return docs.create({
-    name: docName,
-    mimeType: 'application/vnd.google-apps.document',
-  });
-}
-
-function publishInterviewDoc(id) {
-  const drive = gapi.client.drive;
-  return drive.revisions.update({
-    fileId: id,
-    revisionId: 1,
-  }, {
-    published: true, // <-- This is where the magic happens!
-    publishAuto: true,
-  });
+function createAndPublishFile(name, done) {
+  const file = {
+    content: 'Welcome to Google Phone Screen Simulator! Please listen to our interviewer for the next instruction. If you have suggestion or bug, please report to our Github repo. Wish you a successful interview!',
+    id: null,
+    name,
+  };
+  drive.createAndPublishFile(file, done);
 }
 
 export default {
+  initGapi,
+  signIn,
+  signOut,
   authorize,
-  signout,
   isSignedIn,
-  loadGapiClient,
-  initGapiClient,
-  setSignedInListener,
-  callScriptFunction,
-  createDocAndGetLink,
-  createInterviewDoc,
-  publishInterviewDoc,
-  insertText,
+  createAndPublishFile,
 };

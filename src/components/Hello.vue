@@ -45,6 +45,7 @@
               prepend-icon="insert_drive_file"></v-text-field>
         </v-card-row>
         <v-card-row actions>
+          <v-btn class="green--text darken-1" flat="flat" @click.native="switchAccount">Switch</v-btn>
           <v-btn class="green--text darken-1" flat="flat" @click.native="createDocDialog.open = false">Cancel</v-btn>
           <v-btn class="green--text darken-1" flat="flat" @click.native="onGoogleDocCreate">Create</v-btn>
         </v-card-row>
@@ -55,6 +56,7 @@
 
 <script>
 /* eslint no-console: 0 */
+/* eslint-disable */
 import google from '../simulation/google';
 
 export default {
@@ -79,6 +81,10 @@ export default {
   methods: {
     startGoogle() {
       console.log('startGoogle');
+      if (google.client.isSignedIn()) {
+        this.createDocDialog.open = true;
+        return;
+      }
       this.dialog.open = true;
       this.dialog.headline = 'Google Account!';
       this.dialog.text = 'Google uses google doc. This app will edit your doc. It needs your authorization.';
@@ -86,41 +92,42 @@ export default {
       this.dialog.agree = () => {
         console.log('user agreed');
         that.dialog.open = false;
-        // TODO: bad structure, re-structure needed
-        google.client.loadGapiClient(() => {
-          google.client.initGapiClient().then(() => {
-            google.client.authorize().then(() => {
-              that.createDocDialog.open = true;
-            }).catch((error) => {
-              if (error && error.error === 'popup_blocked_by_browser') {
-                // A popup has been blocked by the browser
-                that.dialog.open = true;
-                that.dialog.headline = 'Popup blocked!';
-                that.dialog.text = 'Please enable popup for this site.';
-                this.dialog.agree = () => { that.dialog.open = false; };
-              } else {
-                // some other error
-                console.log(error);
-              }
-            });
-          });
+        google.client.initGapi((isSignedIn) => {
+          // updateAuthStatus
+          if (isSignedIn) {
+            console.log('Signed In');
+            that.createDocDialog.open = true;
+          } else {
+            console.log('Not Signed in');
+            google.client.authorize().catch(that.onAuthError);
+          }
         });
       };
     },
     onGoogleDocCreate() {
       console.log('user agreed, create doc');
-      // google.client.createDocAndGetLink(this.createDocDialog.text);
-      google.client.createInterviewDoc(this.createDocDialog.text).then((response) => {
-        const id = response.result.id;
-        google.client.publishInterviewDoc(id).then(() => {
-          console.log('After publish...');
-          const iframe = `<iframe src="https://docs.google.com/document/d/${id}/pubhtml?widget=true&headers=false&embedded=true"></iframe>`;
-          console.log(iframe);
-          this.$router.push({ name: 'google', params: { id } });
-        });
+      const fileName = this.createDocDialog.text;
+      google.client.createAndPublishFile(fileName, (resp) => {
+        console.log('After publish...');
+        this.$router.push({ name: 'google', params: { id: resp.result.id } });
       });
       this.createDocDialog.open = false;
-      // this.$router.push('interview/google');
+    },
+    onAuthError(error) {
+      if (error && error.error === 'popup_blocked_by_browser') {
+        // A popup has been blocked by the browser
+        that.dialog.open = true;
+        that.dialog.headline = 'Popup blocked!';
+        that.dialog.text = 'Please enable popup for this site.';
+        this.dialog.agree = () => { that.dialog.open = false; };
+      } else {
+        // some other error
+        console.log(error);
+      }
+    },
+    switchAccount() {
+      google.client.signOut();
+      this.createDocDialog.open = false;
     },
   },
 };

@@ -10,9 +10,9 @@
 
 <script>
 /* eslint-disable */
-import * as Artyom from 'artyom.js';
+import Artyom from 'artyom.js';
 import * as types from '../store/mutation-types';
-let artyom = Artyom.ArtyomBuilder.getInstance();
+let artyom = new Artyom();
 import google from '../simulation/google';
 
 export default {

@@ -1,17 +1,20 @@
 <template>
   <v-app dark id="interview">
-    <v-toolbar class="elevation-0">
-      <router-link to="/">
-        <v-toolbar-title class="hidden-sm-and-down">
-            Attack on Titans
-        </v-toolbar-title>
-      </router-link>
-      <v-spacer></v-spacer>
-      <v-btn flat @click.native="play"><v-icon>play_arrow</v-icon></v-btn>
-      <v-btn flat @click.native="pause"><v-icon>pause</v-icon></v-btn>
-      <v-btn flat @click.native="stop"><v-icon>stop</v-icon></v-btn>
-    </v-toolbar>
     <router-view></router-view>
+    <v-speed-dial absolute right bottom direction="top" hover>
+      <v-btn slot="activator" color="blue darken-2" fab>
+        <v-icon>menu</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="green" @click.native="play">
+        <v-icon>play_arrow</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="indigo" @click.native="pause">
+        <v-icon>pause</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="red" @click.native="stop">
+        <v-icon>stop</v-icon>
+      </v-btn>
+    </v-speed-dial>
   </v-app>
 </template>
 

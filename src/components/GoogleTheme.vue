@@ -34,7 +34,7 @@ export default {
           speed: 1,
           debug: true, // Show messages in the console
       });
-      artyom.say("Welcome to Google interview simulator. If you're ready, please click on the play buttom on the top right.");
+      artyom.say("Welcome to Google interview simulator. If you're ready, please click on the play button on the bottom right.");
     },
     play() {
       // intro, speech and paste text to google doc

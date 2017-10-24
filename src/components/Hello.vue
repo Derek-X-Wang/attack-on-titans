@@ -5,50 +5,44 @@
     <v-layout row>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Google-400.png">
-          <v-btn primary light @click.native.stop="startGoogle">Start Google</v-btn>
+          <v-btn color="primary" dark @click.native.stop="startGoogle">Start Google</v-btn>
         </v-layout>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Facebook-400.png">
-          <v-btn primary light disabled router to="/interview/facebook">Start Facebook</v-btn>
+          <v-btn color="primary" dark disabled router to="/interview/facebook">Start Facebook</v-btn>
         </v-layout>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Windows-400.png">
-          <v-btn primary light disabled router to="/interview/microsoft">Start Microsoft</v-btn>
+          <v-btn color="primary" dark disabled router to="/interview/microsoft">Start Microsoft</v-btn>
         </v-layout>
     </v-layout>
     <!-- TODO: solve srollbar padding issue -->
-    <v-dialog hide-overlay v-model="dialog.open">
+    <v-dialog v-model="dialog.open">
       <v-card>
-        <v-card-row>
-          <v-card-title>{{dialog.headline}}</v-card-title>
-        </v-card-row>
-        <v-card-row>
-          <v-card-text>{{dialog.text}}</v-card-text>
-        </v-card-row>
-        <v-card-row actions>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog.open = false">Disagree</v-btn>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog.agree">Agree</v-btn>
-        </v-card-row>
+        <v-card-title>{{dialog.headline}}</v-card-title>
+        <v-card-text>{{dialog.text}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.stop="dialog.open = false">Disagree</v-btn>
+          <v-btn flat @click.stop="dialog.agree">Agree</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- TODO: solve srollbar padding issue -->
-    <v-dialog hide-overlay v-model="createDocDialog.open">
+    <v-dialog v-model="createDocDialog.open">
       <v-card>
-        <v-card-row>
-          <v-card-title>{{createDocDialog.headline}}</v-card-title>
-        </v-card-row>
-        <v-card-row class="pl-3">
-          <v-text-field v-model="createDocDialog.text"
+        <v-card-title>{{createDocDialog.headline}}</v-card-title>
+        <v-text-field v-model="createDocDialog.text"
               name="google-doc-name"
               label="Document Name"
               single-line
-              prepend-icon="insert_drive_file"></v-text-field>
-        </v-card-row>
-        <v-card-row actions>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="switchAccount">Switch</v-btn>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="createDocDialog.open = false">Cancel</v-btn>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="onGoogleDocCreate">Create</v-btn>
-        </v-card-row>
+              prepend-icon="insert_drive_file"
+              class="mx-3 pr-5"></v-text-field>
+        <v-card-actions>
+          <v-btn flat @click.stop="switchAccount">Switch</v-btn>
+          <v-btn flat @click.stop="createDocDialog.open = false">Cancel</v-btn>
+          <v-btn flat @click.stop="onGoogleDocCreate">Create</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-layout>

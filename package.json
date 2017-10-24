@@ -1,6 +1,6 @@
 {
   "name": "attackontitans",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "interview simulator",
   "author": "Derek Wang <derekxinzhewang@gmail.com>",
   "private": true,
@@ -75,6 +75,7 @@
     "shelljs": "^0.7.6",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.8.0",
+    "style-loader": "^0.19.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "url-loader": "^0.5.8",

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Container from '@/components/Container';
+import Website from '@/components/Website';
 import Hello from '@/components/Hello';
 import Credits from '@/components/Credits';
 import Interview from '@/components/Interview';
@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/',
       name: 'Website',
-      component: Container,
+      component: Website,
       children: [
         {
           path: '',

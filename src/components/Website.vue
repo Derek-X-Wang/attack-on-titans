@@ -1,21 +1,19 @@
 <template>
-  <v-app id="aot-container">
-    <v-toolbar class="transparent elevation-0" light>
-      <v-toolbar-title class="hidden-sm-and-down">
+  <v-app dark id="aot-container">
+    <v-toolbar class="transparent elevation-0">
+      <v-toolbar-title class="white--text hidden-sm-and-down">
         <router-link to="/">
             Attack on Titans
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-toolbar-item href="https://github.com/">Github</v-toolbar-item>
-      </v-toolbar-items>
+      <v-btn flat dark>Github</v-btn>
     </v-toolbar>
     <main>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
-  </main>
+    </main>
     <v-footer class="pa-3 transparent elevation-0">
       <router-link to="/credits">
         Credit
@@ -40,17 +38,18 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
+h2, h3, h4, p, a {
+  color: white;
+  text-decoration:none;
+}
+
 #aot-container {
   height: inherit;
   background: url('../assets/code-min.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-}
-h2, h3, h4, p, a {
-  color: white;
-  text-decoration:none;
 }
 
 p {

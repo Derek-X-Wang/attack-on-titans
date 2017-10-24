@@ -1,29 +1,15 @@
 <template>
-  <v-app id="interview">
-    <v-layout row justify-center style="position: relative;">
-      <v-dialog v-model="dialog" lazy absolute>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Use Google's location service?</div>
-          </v-card-title>
-          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
-        </v-card>
-      </v-dialog>
-    </v-layout>
-    <v-toolbar class="elevation-0" light>
+  <v-app dark id="interview">
+    <v-toolbar class="elevation-0">
       <router-link to="/">
         <v-toolbar-title class="hidden-sm-and-down">
             Attack on Titans
         </v-toolbar-title>
       </router-link>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-toolbar-item @click.native="play"><v-icon light>play_arrow</v-icon></v-toolbar-item>
-        <v-toolbar-item @click.native="pause"><v-icon light>pause</v-icon></v-toolbar-item>
-        <v-toolbar-item @click.native="stop"><v-icon light>stop</v-icon></v-toolbar-item>
-      </v-toolbar-items>
+      <v-btn flat @click.native="play"><v-icon>play_arrow</v-icon></v-btn>
+      <v-btn flat @click.native="pause"><v-icon>pause</v-icon></v-btn>
+      <v-btn flat @click.native="stop"><v-icon>stop</v-icon></v-btn>
     </v-toolbar>
     <router-view></router-view>
   </v-app>
@@ -75,5 +61,11 @@ a {
 
 .floatright {
   float:right;
+}
+
+/* Force FAB to bottom */
+/* TODO: get this alignment done within vuetify framework */
+.speed-dial--bottom.speed-dial--absolute {
+  bottom: 10%;
 }
 </style>

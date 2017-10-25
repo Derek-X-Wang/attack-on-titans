@@ -1,10 +1,14 @@
 <template>
   <div class="google">
-    <v-alert warning dismissible v-model="alert">
+    <v-alert color="warning" dismissible v-model="alert" transition="slide-y-transition">
       Oooops! Your browser doesn't support google speech synthesis!
     </v-alert>
     <iframe width="100%" height="100%" frameborder='0' :src='url'>
     </iframe>
+    <v-snackbar bottom left :timeout="snackbar.timeout" :color="snackbar.color" v-model="snackbar.show">
+      {{ snackbar.message }}
+      <v-btn flat @click.native="snackbar.show = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -21,6 +25,12 @@ export default {
   data() {
     return {
       alert: false,
+      snackbar: {
+        show: false,
+        timeout: 6000,
+        color: "info",
+        message: "This is msg"
+      },
     };
   },
   methods: {
@@ -42,9 +52,20 @@ export default {
       // next question
       // google.client.callScriptFunction();
       console.log(this.id);
+      this.snackbar.message = 'Interview is started';
+      this.snackbar.color = 'info';
+      this.snackbar.show = true;
+    },
+    pause() {
+      // this.alert = !this.alert;
+      this.snackbar.message = 'Interview is paused';
+      this.snackbar.color = 'info';
+      this.snackbar.show = true;
     },
     stop() {
-      console.log("stopppppping");
+      this.snackbar.message = 'Interview is stopped';
+      this.snackbar.color = 'warning';
+      this.snackbar.show = true;
     },
   },
   computed: {
@@ -68,7 +89,7 @@ export default {
           this.play();
           break;
         case types.INTERVIEW_PAUSE:
-          this.stop();
+          this.pause();
           break;
         case types.INTERVIEW_STOP:
           this.stop();

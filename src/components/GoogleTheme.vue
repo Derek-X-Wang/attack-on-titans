@@ -34,38 +34,42 @@ export default {
     };
   },
   methods: {
-    startArtyom() {
+    checkArtyom() {
       if (!artyom.speechSupported) {
         this.alert = true;
-        return;
+      } else {
+        google.state.prepare();
       }
-      artyom.initialize({
-          lang: "en-US", // US english
-          speed: 1,
-          debug: true, // Show messages in the console
-      });
-      artyom.say("Welcome to Google interview simulator. If you're ready, please click on the play button on the bottom right.");
     },
     play() {
       // intro, speech and paste text to google doc
       // start counting time, speech and paste #1 question to google doc
       // next question
-      // google.client.callScriptFunction();
       console.log(this.id);
-      this.snackbar.message = 'Interview is started';
-      this.snackbar.color = 'info';
-      this.snackbar.show = true;
+      google.state.start();
+      this.showSnackbar('Interview is started', 'info');
     },
     pause() {
-      // this.alert = !this.alert;
-      this.snackbar.message = 'Interview is paused';
-      this.snackbar.color = 'info';
-      this.snackbar.show = true;
+      this.showSnackbar('Interview is paused', 'info');
     },
     stop() {
-      this.snackbar.message = 'Interview is stopped';
-      this.snackbar.color = 'warning';
-      this.snackbar.show = true;
+      this.showSnackbar('Interview is stopped', 'warning');
+    },
+    showSnackbar(message, color) {
+      if (this.snackbar.show) {
+        this.snackbar.show = false;
+        let that = this;
+        setTimeout(function() {
+          // delay for previous snackbar dismiss
+          that.snackbar.message = message;
+          that.snackbar.color = color;
+          that.snackbar.show = true;
+        }, 300);
+      } else {
+        this.snackbar.message = message;
+        this.snackbar.color = color;
+        this.snackbar.show = true;
+      }
     },
   },
   computed: {
@@ -75,10 +79,11 @@ export default {
     }
   },
   mounted() {
-    console.log(`user login is ${window.gapi.auth2.getAuthInstance().isSignedIn.get()}`)
+    google.state.fileId = this.id;
+    console.log(`user login is ${window.gapi.auth2.getAuthInstance().isSignedIn.get()}`);
     let that = this;
     setTimeout(function() {
-      that.startArtyom();
+      that.checkArtyom();
     }, 1000);
   },
   created() {

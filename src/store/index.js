@@ -8,7 +8,8 @@ Vue.use(Vuex);
 
 const state = {
   interviewType: 'unknown',
-  interviewState: 'init',
+  interviewState: 'none',
+  interviewMode: 'MODE_SM',
 };
 
 export default new Vuex.Store({

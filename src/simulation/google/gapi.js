@@ -52,11 +52,32 @@ function isSignedIn() {
 
 function createAndPublishFile(name, done) {
   const file = {
-    content: 'Welcome to Google Phone Screen Simulator! Please listen to our interviewer for the next instruction. If you have suggestion or bug, please report to our Github repo. Wish you a successful interview!',
+    content: 'Welcome to Google Phone Screen Simulator! Please listen to our interviewer for the next instruction. If you have suggestions or find bugs, please report to our Github repo. Wish you a successful interview!',
     id: null,
     name,
   };
   drive.createAndPublishFile(file, done);
+}
+
+function addContent(id, content) {
+  const file = {
+    id,
+  };
+  drive.loadFile(file, (res) => {
+    const newFile = {
+      id,
+      content: res.content + content,
+    };
+    drive.saveFile(newFile, () => {});
+  });
+}
+
+function newContent(id, content) {
+  const file = {
+    content,
+    id,
+  };
+  drive.saveFile(file, () => {});
 }
 
 export default {
@@ -66,4 +87,6 @@ export default {
   authorize,
   isSignedIn,
   createAndPublishFile,
+  addContent,
+  newContent,
 };

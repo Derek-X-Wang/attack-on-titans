@@ -7,7 +7,9 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat dark>Github</v-btn>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat dark>Github</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <main>
       <v-container fluid>
@@ -32,6 +34,7 @@ export default {
   data() {
     return {
       version,
+      ex13: false,
     };
   },
 };
@@ -42,6 +45,10 @@ export default {
 h2, h3, h4, p, a {
   color: white;
   text-decoration:none;
+}
+
+.switch {
+  width: 200px;
 }
 
 #aot-container {

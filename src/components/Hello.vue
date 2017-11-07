@@ -6,6 +6,10 @@
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Google-400.png">
           <v-btn color="primary" dark @click.native.stop="startGoogle">Start Google</v-btn>
+          <v-tooltip bottom>
+            <v-switch slot="activator" hide-details v-model="googleModeSwitch"></v-switch>
+            <span>{{googleModeSwitch ? 'AI Mode(Experiential)':'State Machine Mode(default)'}}</span>
+          </v-tooltip>
         </v-layout>
         <v-layout column align-center>
           <img class="company-icons" src="../assets/icons8-Facebook-400.png">
@@ -16,7 +20,6 @@
           <v-btn color="primary" dark disabled router to="/interview/microsoft">Start Microsoft</v-btn>
         </v-layout>
     </v-layout>
-    <!-- TODO: solve srollbar padding issue -->
     <v-dialog v-model="dialog.open">
       <v-card>
         <v-card-title>{{dialog.headline}}</v-card-title>
@@ -28,7 +31,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- TODO: solve srollbar padding issue -->
     <v-dialog v-model="createDocDialog.open">
       <v-card>
         <v-card-title>{{createDocDialog.headline}}</v-card-title>
@@ -68,8 +70,9 @@ export default {
       createDocDialog: {
         open: false,
         headline: 'Create a Google Doc',
-        text: '',
+        text: 'New Interview',
       },
+      googleModeSwitch: false,
     };
   },
   methods: {
@@ -106,6 +109,10 @@ export default {
         this.$router.push({ name: 'google', params: { id: resp.result.id } });
       });
       this.createDocDialog.open = false;
+      // set state
+      this.$store.state.interviewType = 'google';
+      this.$store.state.interviewState = 'init';
+      this.$store.state.interviewMode = this.googleModeSwitch ? 'MODE_AI' : 'MODE_SM';
     },
     onAuthError(error) {
       if (error && error.error === 'popup_blocked_by_browser') {
@@ -131,6 +138,9 @@ export default {
 <style scoped>
 #hello {
   
+}
+.switch {
+  width: 34px;
 }
 .company-icons {
   width: 200px;

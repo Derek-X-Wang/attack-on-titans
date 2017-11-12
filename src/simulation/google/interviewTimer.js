@@ -1,7 +1,7 @@
 import Artyom from 'artyom.js';
 
 function InterviewTimer() {
-  const Queue = function () {
+  const Queue = function Queue() {
     this.list = [];
   };
   Queue.prototype = {
@@ -18,7 +18,7 @@ function InterviewTimer() {
       const self = this;
       const list = self.list;
       self.isDequeuing = true;
-      const el = list.shift() || function () {};
+      const el = list.shift() || function el() {};
       if (typeof el === 'number') {
         setTimeout(() => {
           self.dequeue();
@@ -33,57 +33,45 @@ function InterviewTimer() {
       }
     },
   };
+
   const artyom = new Artyom();
-  let running = false;
-  let timeout = null;
-  const tasks = [];
-  this.addTask = function () {
-    // duration, callback
-    console.log('hehehe');
-  };
+  const tasks = new Queue();
 
-  this.addSpeakTask = function (text, wait, done) {
-    const task = {
-      text,
-      wait,
-      done,
-    };
-    tasks.push(task);
-    if (!running) {
-      this.start();
+  this.task = function task(func) {
+    tasks.queue(func);
+    if (!tasks.isDequeuing) {
+      tasks.dequeue();
     }
   };
 
-  this.start = function () {
-    // start
-    running = true;
-    if (tasks.length !== 0) {
-      // run the first task
-      let task = tasks.shift();
-      if (task.text) {
-        // speak before wait
-        artyom.say(task.text, {
-          onEnd() {
-            timeout = setTimeout(function () {
-              running = false;
-              task.done(this.next);
-            }, task.wait);
-          },
-        });
-      } else {
-        // just wait
-        timeout = setTimeout(function () {
-          running = false;
-          task.done(this.next);
-        }, task.wait);
-      }
-    } else {
-      running = false;
+  this.wait = function wait(time) {
+    tasks.queue(time);
+    if (!tasks.isDequeuing) {
+      tasks.dequeue();
     }
   };
 
-  this.next = function () {
-    this.start();
+  this.speak = function speak(text, done) {
+    tasks.queue(() => {
+      artyom.say(text, {
+        onEnd() {
+          done();
+        },
+      });
+    });
+    if (!tasks.isDequeuing) {
+      tasks.dequeue();
+    }
+  };
+
+  this.speakAndWait = function speakAndWait(texts, wait) {
+    texts.forEach((text) => {
+      artyom.say(text);
+    });
+    tasks.queue(wait);
+    if (!tasks.isDequeuing) {
+      tasks.dequeue();
+    }
   };
 }
 

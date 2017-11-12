@@ -13,11 +13,11 @@ function getTimeString(distance) {
   return dayStr + hourStr + minuteStr + secondsStr;
 }
 
-function CountdownTimer(countDownDate, options) {
+function CountdownTimer(endtime, options) {
   let countDownTime = '--:--';
   const countDown = setInterval(() => {
     const now = new Date().getTime();
-    const distance = countDownDate - now;
+    const distance = endtime - now;
     countDownTime = getTimeString(distance);
     options.onInterval(distance);
     if (distance < 0) {
@@ -26,8 +26,8 @@ function CountdownTimer(countDownDate, options) {
     }
   }, 1000);
 
-  self.stop = function () { clearInterval(countDown); };
-  self.getTime = function () { return countDownTime; };
+  self.stop = function stop() { clearInterval(countDown); };
+  self.getTime = function getTime() { return countDownTime; };
 }
 
 export default CountdownTimer;

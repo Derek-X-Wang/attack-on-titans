@@ -19,6 +19,7 @@ const fsm = new StateMachine({
     return {
       question: 0,
       fileId: 'unknown',
+      timeout: null,
     };
   },
   methods: {
@@ -28,14 +29,64 @@ const fsm = new StateMachine({
     },
     onStart() {
       console.log('onStart');
-      GoogleClient.newContent(this.id, '');
+      GoogleClient.newContent(this.fileId, ' ');
       artyom.say("Hi, nice to meet you. I'm Jack from Google. How are you today?");
       artyom.say('Well, could you talk a little bit about yourself?');
+
+      setTimeout(() => {
+        artyom.say("Good. Without further ado, let's get started", {
+          onEnd() {
+            fsm.ask();
+          },
+        });
+      }, 10000);
     },
-    onAsk() { console.log('I vaporized'); },
-    onVerify() { console.log('I condensed'); },
-    onFinish() { console.log('I condensed'); },
-    onStop() { console.log('I vaporized'); },
+    onAsk() {
+      const that = this;
+      let askText = 'Next question.';
+      switch (this.question) {
+        case 0:
+          askText = "First question. Let's begin with something simple.";
+          break;
+        case 1:
+          askText = 'Second question.';
+          break;
+        case 2:
+          askText = 'Last question.';
+          break;
+        default:
+          break;
+      }
+      artyom.say(askText, {
+        onEnd() {
+          // put question
+          GoogleClient.addContent(this.fileId, '\nThis is a new question.');
+          // setup timer
+          that.timeout = setTimeout(() => {
+            artyom.say('Sorry, we run out of time for this question', {
+              onEnd() {
+                fsm.verify();
+              },
+            });
+          }, 1000 * 60 * 25);
+        },
+      });
+    },
+    onVerify() {
+      const that = this;
+      artyom.say('So, what are the time complexity and space complexity of your algorithm?');
+      setTimeout(() => {
+        if (that.question === 2) {
+          fsm.finish();
+        } else {
+          fsm.ask();
+        }
+      }, 1000 * 60 * 5);
+    },
+    onFinish() {
+      artyom.say('Thank you for your participation! You will hear our next move for the recruiter!');
+    },
+    onStop() { console.log('interview stopped'); },
   },
 });
 

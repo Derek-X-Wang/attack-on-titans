@@ -74,8 +74,8 @@ function addContent(id, content) {
 
 function newContent(id, content) {
   const file = {
-    content,
     id,
+    content,
   };
   drive.saveFile(file, () => {});
 }

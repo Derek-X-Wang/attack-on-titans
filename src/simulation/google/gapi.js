@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 // eslint-disable-next-line no-use-before-define
-import DriveService from './drive.service';
-import LoginService from './login.service';
+import DriveService from './drive-service';
+import LoginService from './login-service';
 // import gapi from 'googleapis';
 const gapi = window.gapi;
 

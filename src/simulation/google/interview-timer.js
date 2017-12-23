@@ -34,11 +34,17 @@ function InterviewTimer() {
     },
   };
 
-  const artyom = new Artyom();
   const tasks = new Queue();
+  const artyom = new Artyom();
 
-  this.task = function task(func) {
-    tasks.queue(func);
+  this.task = function task(obj) {
+    if (typeof obj === 'string') {
+      tasks.queue(() => {
+        artyom.say(obj);
+      });
+    } else {
+      tasks.queue(obj);
+    }
     if (!tasks.isDequeuing) {
       tasks.dequeue();
     }

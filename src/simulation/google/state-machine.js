@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as StateMachine from 'javascript-state-machine';
-import GoogleClient from './gapi';
+import googleClient from './gapi';
 import InterviewTimer from './interview-timer';
 import ScriptGenerator from './script-generator';
 
@@ -27,6 +27,10 @@ function runScript(state, timer) {
   });
 }
 
+function isLastQuestion(question) {
+  return question === 2;
+}
+
 function pickQuestion(difficulty, language) {
   const d = difficulty.toLowerCase();
   const l = language.toLowerCase();
@@ -35,6 +39,7 @@ function pickQuestion(difficulty, language) {
     params: {
       d,
       l,
+      c: 'google',
     },
   });
 }
@@ -56,12 +61,57 @@ const fsm = new StateMachine({
       fileId: 'unknown',
       timer: null,
       report: {
-        record: [], // {question: '', example: '', answer: '', userAnswer: ''}
+        /*
+        {
+          index: number,
+          language: string,
+          question: string,
+          example: string,
+          answer: string,
+          userAnswer: string,
+        }
+        */
+        record: [],
         language: 'java',
       },
     };
   },
   methods: {
+    stepValidation() {
+      if (isLastQuestion(this.question)) {
+        fsm.finish();
+      } else {
+        this.question += 1;
+        fsm.ask();
+      }
+    },
+    next() {
+      this.timer.clear();
+      switch (fsm.state) {
+        case 'idle': {
+          fsm.start();
+          break;
+        }
+        case 'intro': {
+          fsm.ask();
+          break;
+        }
+        case 'question': {
+          fsm.verify();
+          break;
+        }
+        case 'validation': {
+          this.stepValidation();
+          break;
+        }
+        case 'ending': {
+          fsm.end();
+          break;
+        }
+        default:
+          break;
+      }
+    },
     onPrepare() {
       console.log('onPrepare');
       this.timer = new InterviewTimer();
@@ -69,11 +119,12 @@ const fsm = new StateMachine({
     },
     onStart() {
       console.log('onStart');
-      GoogleClient.newContent(this.fileId, ' ');
+      googleClient.newContent(this.fileId, ' '); // have to be ' ', '' will become null
       runScript({ interviewState: fsm.state }, this.timer);
       this.timer.task(() => fsm.ask());
     },
     onAsk() {
+      console.log('onAsk');
       runScript({
         interviewState: fsm.state,
         question: this.question,
@@ -85,7 +136,7 @@ const fsm = new StateMachine({
             console.log(response);
             const data = response.data;
             const fullText = `\n\n${data.question}\n${data.example || ''}\n`;
-            GoogleClient.addContent(this.fileId, fullText);
+            googleClient.addContent(this.fileId, fullText);
           })
           .catch((error) => {
             console.log(error);
@@ -97,20 +148,21 @@ const fsm = new StateMachine({
       });
     },
     onVerify() {
+      console.log('onVerify');
       const that = this;
       runScript({ interviewState: fsm.state }, this.timer);
       this.timer.wait(1000 * 60 * 1);
       this.timer.task(() => {
-        if (that.question === 2) {
-          fsm.finish();
-        } else {
-          that.question += 1;
-          fsm.ask();
-        }
+        that.stepValidation();
       });
     },
     onFinish() {
+      console.log('onFinish');
       runScript({ interviewState: fsm.state }, this.timer);
+      this.question = 0;
+      // state in progress without wait time
+      // TODO: fix this issue
+      this.timer.wait(1000 * 1);
       this.timer.task(() => {
         fsm.end();
       });
@@ -120,6 +172,8 @@ const fsm = new StateMachine({
     },
     onStop() {
       console.log('interview stopped');
+      // clear timer
+      this.timer.clear();
     },
   },
 });

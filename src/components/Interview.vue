@@ -8,11 +8,11 @@
       <v-btn fab dark small color="green" @click.native="play">
         <v-icon>play_arrow</v-icon>
       </v-btn>
-      <v-btn fab dark small color="indigo" @click.native="pause">
-        <v-icon>pause</v-icon>
-      </v-btn>
       <v-btn fab dark small color="red" @click.native="stop">
         <v-icon>stop</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="blue" @click.native="next">
+        <v-icon>done</v-icon>
       </v-btn>
     </v-speed-dial>
   </v-app>
@@ -34,14 +34,14 @@ export default {
         type: 'startInterview',
       });
     },
-    pause() {
-      this.$store.dispatch({
-        type: 'pauseInterview',
-      });
-    },
     stop() {
       this.$store.dispatch({
         type: 'stopInterview',
+      });
+    },
+    next() {
+      this.$store.dispatch({
+        type: 'nextInterview',
       });
     },
   }

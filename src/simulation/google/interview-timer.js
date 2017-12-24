@@ -3,6 +3,7 @@ import Artyom from 'artyom.js';
 function InterviewTimer() {
   const Queue = function Queue() {
     this.list = [];
+    this.timeout = null;
   };
   Queue.prototype = {
     constructor: Queue,
@@ -14,13 +15,21 @@ function InterviewTimer() {
       this.list.push(ms);
       return this;
     },
+    clear() {
+      this.list = [];
+      this.isDequeuing = false;
+      if (this.timeout != null) {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }
+    },
     dequeue() {
       const self = this;
       const list = self.list;
       self.isDequeuing = true;
       const el = list.shift() || function el() {};
       if (typeof el === 'number') {
-        setTimeout(() => {
+        self.timeout = setTimeout(() => {
           self.dequeue();
         }, el);
       } else if (typeof el === 'function') {
@@ -45,6 +54,13 @@ function InterviewTimer() {
     } else {
       tasks.queue(obj);
     }
+    if (!tasks.isDequeuing) {
+      tasks.dequeue();
+    }
+  };
+
+  this.clear = () => {
+    tasks.clear();
     if (!tasks.isDequeuing) {
       tasks.dequeue();
     }

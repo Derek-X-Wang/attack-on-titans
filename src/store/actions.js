@@ -21,6 +21,12 @@ const actions = {
       scene,
     });
   },
+  nextInterview({ commit }, { scene }) {
+    commit({
+      type: types.INTERVIEW_NEXT,
+      scene,
+    });
+  },
 };
 
 export default actions;

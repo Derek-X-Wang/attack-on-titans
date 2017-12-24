@@ -19,7 +19,9 @@ function ScriptGenerator(initState) {
     ],
     intro: [
       [
-        `Hi, nice to meet you. I'm ${interviewer} from Google. How are you today?`,
+        'Hi, nice to meet you.',
+        `I'm ${interviewer} from Google.`,
+        'How are you today?',
         'Well, could you talk a little bit about yourself?',
         10 * 1000,
         "Good. Without further ado, let's get started",
@@ -27,7 +29,10 @@ function ScriptGenerator(initState) {
     ],
     question: [],
     questionFirst: [
-      ["First question. Let's begin with something simple."],
+      [
+        'First question.',
+        "Let's begin with something simple.",
+      ],
     ],
     questionSecond: [
       ['Second question.'],

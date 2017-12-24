@@ -11,6 +11,9 @@ const mutations = {
   [types.INTERVIEW_STOP](state) {
     state.interviewState = '';
   },
+  [types.INTERVIEW_NEXT](state) {
+    state.interviewState = '';
+  },
 };
 
 export default mutations;

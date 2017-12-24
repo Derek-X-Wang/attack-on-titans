@@ -29,7 +29,7 @@ export default {
         show: false,
         timeout: 6000,
         color: "info",
-        message: "This is msg"
+        message: "This is msg",
       },
     };
   },
@@ -42,18 +42,26 @@ export default {
       }
     },
     play() {
-      // intro, speech and paste text to google doc
-      // start counting time, speech and paste #1 question to google doc
-      // next question
-      console.log(this.id);
-      google.state.start();
-      this.showSnackbar('Interview is started', 'info');
-    },
-    pause() {
-      this.showSnackbar('Interview is paused', 'info');
+      if (google.state.state === 'idle') {
+        google.state.start();
+        this.showSnackbar('Interview is started', 'info');
+      } else {
+        this.showSnackbar('Interview is running already', 'warning');
+      }
     },
     stop() {
+      google.state.stop();
       this.showSnackbar('Interview is stopped', 'warning');
+    },
+    next() {
+      if (google.state.state === 'idle') {
+        this.showSnackbar('Interview is not running', 'warning');
+        return;
+      }
+      google.state.next();
+      const questionNumber = google.state.question === 0 ? '' : ` ${google.state.question}`;
+      const msg = `Skip to ${google.state.state}${questionNumber}`;
+      this.showSnackbar(msg, 'info');
     },
     showSnackbar(message, color) {
       if (this.snackbar.show) {
@@ -93,11 +101,11 @@ export default {
         case types.INTERVIEW_START:
           this.play();
           break;
-        case types.INTERVIEW_PAUSE:
-          this.pause();
-          break;
         case types.INTERVIEW_STOP:
           this.stop();
+          break;
+        case types.INTERVIEW_NEXT:
+          this.next();
           break;
       }
     })

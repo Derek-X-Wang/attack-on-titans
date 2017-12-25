@@ -15,17 +15,40 @@
         <v-icon>done</v-icon>
       </v-btn>
     </v-speed-dial>
+    <v-dialog v-model="report" fullscreen
+      transition="dialog-bottom-transition" :overlay="false" scrollable>
+      <v-card light color="grey lighten-3">
+        <v-toolbar style="flex: 0 0 auto;" dark class="primary">
+          <v-btn icon @click.native.stop="closeReport" dark>
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Report</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text class="pa-0">
+          <v-layout row wrap>
+            <v-flex xs12 v-for="record in records" :key='record.index'>
+              <report-block :record="record"/>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script>
 /* eslint-disable */
+import { mapGetters } from 'vuex';
+import ReportBlock from './ReportBlock';
+
 export default {
   name: 'interview',
+  components: {
+    'report-block': ReportBlock,
+  },
   data() {
     return {
-      dialog: false,
-      alert: false
+      alert: false,
     };
   },
   methods: {
@@ -44,7 +67,13 @@ export default {
         type: 'nextInterview',
       });
     },
-  }
+    closeReport() {
+      this.$store.dispatch({
+        type: 'closeInterviewReport',
+      });
+    },
+  },
+  computed: mapGetters(['report', 'records']),
 };
 </script>
 

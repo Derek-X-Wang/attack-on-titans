@@ -10,6 +10,8 @@ const state = {
   interviewType: 'unknown',
   interviewState: 'none',
   interviewMode: 'MODE_SM',
+  report: false,
+  records: [],
 };
 
 export default new Vuex.Store({

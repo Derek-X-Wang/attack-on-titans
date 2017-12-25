@@ -11,26 +11,31 @@ function DriveService(){
       fileId: file.id,
       revisionId: 1,
     }, {
-      published: true, // <-- This is where the magic happens!
+      published: true,
       publishAuto: true,
     }).then(function(resp) {
-      console.log('file published', resp.result);
+      // console.log('file published', resp.result);
       resp.result.versionId = resp.result.id;
       resp.result.id = file.id;
       done(resp);
     });
-  }
+  };
 
   this.loadFile = function(file, done) {
     gapi.client.drive.files.export({
       fileId: file.id,
       mimeType: 'text/plain',
-      fields: 'id,name,parents'
+      fields: 'id,name,parents',
     }).then(function(resp) {
-      var retFile = {name: file.name, id: file.id, content: resp.body, parents: file.parents};
+      var retFile = {
+        name: file.name,
+        id: file.id,
+        content: resp.body,
+        parents: file.parents,
+      };
       done(retFile);
     });
-  }
+  };
 
   this.saveFile = function(file, done) {
     function addContent(fileId) {
@@ -38,15 +43,15 @@ function DriveService(){
           path: '/upload/drive/v3/files/' + fileId,
           method: 'PATCH',
           params: {
-            uploadType: 'media'
+            uploadType: 'media',
           },
-          body: file.content
+          body: file.content,
         })
     }
     var metadata = {
       mimeType: 'application/vnd.google-apps.document',
       name: file.name,
-      fields: 'id'
+      fields: 'id',
     }
     if (file.parents) {
       metadata.parents = file.parents;
@@ -54,20 +59,20 @@ function DriveService(){
 
     if (file.id) { //just update
       addContent(file.id).then(function(resp) {
-        console.log('File just updated', resp.result);
+        // console.log('File just updated', resp.result);
         done(resp.result);
       })
     } else { //create and update
       gapi.client.drive.files.create({
-        resource: metadata
+        resource: metadata,
       }).then(function(resp) {
         addContent(resp.result.id).then(function(resp) {
-          console.log('created and added content', resp.result);
+          // console.log('created and added content', resp.result);
           done(resp.result);
         })
       });
     }
-  }
+  };
 
   this.list = function(resource,  done) {
     var query= ' name contains "'+resource.query_name+'" '
@@ -86,13 +91,13 @@ function DriveService(){
         spaces: 'drive',
         fields: "nextPageToken, files(id, name, mimeType)",
         q: query,
-        orderBy: resource.orderBy || 'modifiedTime desc'
+        orderBy: resource.orderBy || 'modifiedTime desc',
     }).then(function(resp) {
       return done(null, resp.result.files);
     },function(reason) {
       return done(reason, null);
     })
-  }
+  };
   
   //*****************************************************
   //SPECIFIC METHODS TO MAKE IT EASIER TO USE
@@ -104,23 +109,23 @@ function DriveService(){
       file.id = resp.id;
       that.publishFile(file, done);
     });
-  }
+  };
 
   this.listFilesAt = function(query_name, parents, done) {
     this.list({query_name:query_name, parents:parents, trashed:false}, done)
-  }
+  };
 
   this.listFiles = function(query_name, done) {
     this.list({query_name:query_name, trashed:false}, done)
-  }
+  };
 
   this.listFolders = function(query_name, parents, done) {
     this.list({query_name:query_name, mimeType: 'application/vnd.google-apps.folder', trashed:false}, done)
-  }
+  };
   
   this.listFoldersAt = function(query_name, parents, done) {
     this.list({query_name:query_name, parents:parents, mimeType: 'application/vnd.google-apps.folder', trashed:false}, done)
-  }
+  };
 
 }
 

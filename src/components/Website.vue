@@ -27,14 +27,15 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { version } from './../../package.json';
+
 
 export default {
   name: 'hello',
   data() {
     return {
       version,
-      ex13: false,
     };
   },
 };

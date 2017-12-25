@@ -59,7 +59,8 @@ export default {
         return;
       }
       google.state.next();
-      const questionNumber = google.state.question === 0 ? '' : ` ${google.state.question}`;
+      const num = google.state.question + 1
+      const questionNumber = num === 1 ? '' : ` ${num}`;
       const msg = `Skip to ${google.state.state}${questionNumber}`;
       this.showSnackbar(msg, 'info');
     },

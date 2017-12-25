@@ -1,30 +1,35 @@
 import * as types from './mutation-types';
 
 const actions = {
-  startInterview({ commit }, { selected, selectedIndex, orientation }) {
+  startInterview({ commit }) {
     commit({
       type: types.INTERVIEW_START,
-      selected,
-      selectedIndex,
-      orientation,
     });
   },
-  pauseInterview({ commit }, { scene }) {
+  pauseInterview({ commit }) {
     commit({
       type: types.INTERVIEW_PAUSE,
-      scene,
     });
   },
-  stopInterview({ commit }, { scene }) {
+  stopInterview({ commit }) {
     commit({
       type: types.INTERVIEW_STOP,
-      scene,
     });
   },
-  nextInterview({ commit }, { scene }) {
+  nextInterview({ commit }) {
     commit({
       type: types.INTERVIEW_NEXT,
-      scene,
+    });
+  },
+  showInterviewReport({ commit }, { records }) {
+    commit({
+      type: types.INTERVIEW_REPORT_SHOW,
+      records,
+    });
+  },
+  closeInterviewReport({ commit }) {
+    commit({
+      type: types.INTERVIEW_REPORT_CLOSE,
     });
   },
 };

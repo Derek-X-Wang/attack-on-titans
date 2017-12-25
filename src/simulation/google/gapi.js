@@ -52,7 +52,7 @@ function isSignedIn() {
 
 function createAndPublishFile(name, done) {
   const file = {
-    content: 'Welcome to Google Phone Screen Simulator! Please listen to our interviewer for the next instruction. If you have suggestions or find bugs, please report to our Github repo. Wish you a successful interview!',
+    content: 'Welcome to Google Phone Screen Simulator! Please listen to our interviewer for the next instruction. If you have suggestions or find bugs, please report to our Github repo. Wish you a successful interview! \n\nInstructions:\n1. Check button: Skip to the next phase.\n2. Stop button: Stop current interview.\n3. Play button: Start your interview!\n',
     id: null,
     name,
   };
@@ -80,6 +80,15 @@ function newContent(id, content) {
   drive.saveFile(file, () => {});
 }
 
+function loadContent(id, done) {
+  const file = {
+    id,
+  };
+  drive.loadFile(file, (res) => {
+    done(res);
+  });
+}
+
 export default {
   initGapi,
   signIn,
@@ -89,4 +98,5 @@ export default {
   createAndPublishFile,
   addContent,
   newContent,
+  loadContent,
 };

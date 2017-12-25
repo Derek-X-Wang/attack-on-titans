@@ -1,24 +1,25 @@
 import axios from 'axios';
 
-const requestUrl = 'https://wi7z6vqv2g.execute-api.us-east-1.amazonaws.com/v1';
+const ENDPOINT = 'https://wi7z6vqv2g.execute-api.us-east-1.amazonaws.com/v1';
 
-function getProblem(difficulty, language) {
-  const url = `${requestUrl}/problem`;
-  axios.get(url, {
+function pickQuestion(difficulty, language, records) {
+  const d = difficulty.toLowerCase();
+  const l = language.toLowerCase();
+  const used = [];
+  records.forEach((record) => {
+    used.push(record.index);
+  });
+  const url = `${ENDPOINT}/problem`;
+  return axios.get(url, {
     params: {
-      difficulty,
-      language,
+      d,
+      l,
+      c: 'google',
+      u: used.join(','),
     },
-  })
-  .then((response) => {
-    console.log(response.data.url);
-    console.log(response.data.explanation);
-  })
-  .catch((error) => {
-    console.log(error);
   });
 }
 
 export default {
-  getProblem,
+  pickQuestion,
 };

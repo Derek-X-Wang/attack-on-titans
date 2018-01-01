@@ -2,12 +2,21 @@
 
 Simualting big tech companies' phone screen, as real as possible.
 
+### Alpha
+> The app is in alpha testing. Please report to Issues or do a pull request if you encounter any bug.
+
 ## Live
 > in progress
 
 ## Why
 
-> I failed my google interview couple months ago. It's my fault. I didn't do my homework and was way too nervous. However, it still made feel bad. So, I was thinking, "why not make it become easier for everyone?" This is my little 'revenge'. Hope it will be useful for you also.
+> I failed my google interview couple months ago. It's my fault. I didn't do my homework and was way too nervous. However, it still made feel bad. So, I was thinking, "why not make it easier for everyone?" This is my little 'revenge'. Hope it will be useful for you also.
+
+## Screenshots
+<img width="80%" alt="screen shot 2018-01-01 at 1 54 48 am" src="https://user-images.githubusercontent.com/6364170/34466906-ff28d2ae-ee97-11e7-86d0-5ffdebdd9d4b.png">
+<img width="80%" alt="screen shot 2018-01-01 at 1 55 54 am" src="https://user-images.githubusercontent.com/6364170/34466907-026ce05e-ee98-11e7-8caf-90bf1fcbb706.png">
+<img width="80%" alt="screen shot 2018-01-01 at 1 57 00 am" src="https://user-images.githubusercontent.com/6364170/34466909-04e0681a-ee98-11e7-9d91-c44c058809b1.png">
+<img width="80%" alt="screen shot 2018-01-01 at 1 58 10 am" src="https://user-images.githubusercontent.com/6364170/34466910-072cc442-ee98-11e7-92e6-f84f9dd6bd5d.png">
 
 ## Help Wanted!!!
 - The script. It has been quite long since my interview. I don't really remember what exactly my interviewer said... Not only google but also other big tech firms.
@@ -33,6 +42,8 @@ npm run dev
 - Simple bot by Dialogflow/api.ai -> 0.4
 - Improve script generator -> 0.4
 - Improve speech synthesis
+- unit test
+- e2e test
 
 ## Credit
 - [seed project](http://vuejs-templates.github.io/webpack/)

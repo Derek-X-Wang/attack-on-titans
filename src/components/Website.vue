@@ -8,7 +8,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat dark>Github</v-btn>
+        <v-btn flat dark href="https://github.com/Derek-X-Wang/attack-on-titans">Github</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <main>

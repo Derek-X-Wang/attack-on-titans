@@ -7,7 +7,7 @@
           <img class="company-icons" src="../assets/icons8-Google-400.png">
           <v-btn color="primary" dark @click.native.stop="startGoogle">Start Google</v-btn>
           <v-tooltip bottom>
-            <v-switch slot="activator" hide-details v-model="googleModeSwitch"></v-switch>
+            <v-switch disabled slot="activator" hide-details v-model="googleModeSwitch"></v-switch>
             <span>{{googleModeSwitch ? 'AI Mode(Experiential)':'State Machine Mode(default)'}}</span>
           </v-tooltip>
         </v-layout>

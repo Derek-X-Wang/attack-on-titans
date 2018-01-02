@@ -96,7 +96,18 @@ export default {
             that.createDocDialog.open = true;
           } else {
             console.log('Not Signed in');
-            google.client.authorize().catch(that.onAuthError);
+            google.client.authorize().catch((error) => {
+              if (error && error.error === 'popup_blocked_by_browser') {
+                // A popup has been blocked by the browser
+                that.dialog.open = true;
+                that.dialog.headline = 'Popup blocked!';
+                that.dialog.text = 'Please enable popup for this site.';
+                that.dialog.agree = () => { that.dialog.open = false; };
+              } else {
+                // some other error
+                console.log(error);
+              }
+            });
           }
         });
       };

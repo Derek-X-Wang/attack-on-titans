@@ -6,7 +6,7 @@ import LoginService from './login-service';
 const gapi = window.gapi;
 
 // Client ID and API key from the Developer Console
-const CLIENT_ID = '859895141676-u1ffb52alfhrc00kgqelef579avkpaqt.apps.googleusercontent.com';
+const CLIENT_ID = '369750846809-7b925tejk5mk9bcutr2nfrt5f28un821.apps.googleusercontent.com';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];

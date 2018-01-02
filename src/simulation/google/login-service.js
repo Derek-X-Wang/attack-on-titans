@@ -12,7 +12,7 @@ function LoginService(clientId, scopes, discoveryDocs){
       // Handle the initial sign-in state.
       updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     }, function(reason){
-      console.log('ERROR: '+reason)
+      console.error(reason)
     });
   }   
   

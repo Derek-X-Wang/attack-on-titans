@@ -23,7 +23,7 @@ function ScriptGenerator(initState) {
         `I'm ${interviewer} from Google.`,
         'How are you today?',
         'Well, could you talk a little bit about yourself?',
-        10 * 1000,
+        40 * 1000,
         "Good. Without further ado, let's get started",
       ],
     ],

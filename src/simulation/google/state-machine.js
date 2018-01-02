@@ -127,7 +127,7 @@ const fsm = new StateMachine({
     },
     onStart() {
       console.log('onStart');
-      
+
       // init state
       this.question = 0;
       this.index = 0;
@@ -167,7 +167,7 @@ const fsm = new StateMachine({
             console.log(error);
           });
       });
-      this.timer.wait(1000 * 60 * 1);
+      this.timer.wait(1000 * 60 * 12);
       this.timer.speak('Sorry, we run out of time for this question', () => {
         fsm.verify();
       });

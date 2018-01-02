@@ -6,7 +6,12 @@ Simualting big tech companies' phone screen, as real as possible.
 > The app is in alpha testing. Please report to Issues or do a pull request if you encounter any bug.
 
 ## Live
-> in progress
+[website](http://attackontitans-env.6h2vtm2wag.us-east-1.elasticbeanstalk.com/#/)
+
+When you authorize aot
+> Google will show "This app isn't verified". Click "Advanced" and grant the access.
+
+I'll verify aot when I get some time. Or feel free to run aot locally.
 
 ## Why
 

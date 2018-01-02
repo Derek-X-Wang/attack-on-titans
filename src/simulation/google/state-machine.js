@@ -127,6 +127,12 @@ const fsm = new StateMachine({
     },
     onStart() {
       console.log('onStart');
+      
+      // init state
+      this.question = 0;
+      this.index = 0;
+      this.records = [];
+
       googleClient.newContent(this.fileId, ' '); // have to be ' ', '' will become null
       runScript({ interviewState: fsm.state }, this.timer);
       this.timer.task(() => fsm.ask());
@@ -191,8 +197,6 @@ const fsm = new StateMachine({
     onFinish() {
       console.log('onFinish');
       runScript({ interviewState: fsm.state }, this.timer);
-      this.question = 0;
-      this.index = 0;
       // state in progress without wait time
       // TODO: fix this issue
       this.timer.wait(1000 * 1);

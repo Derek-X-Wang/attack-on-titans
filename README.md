@@ -15,7 +15,7 @@ I'll verify aot when I get some time. Or feel free to run aot locally.
 
 ## Why
 
-> I failed my google interview couple months ago. It's my fault. I didn't do my homework and was way too nervous. However, it still made feel bad. So, I was thinking, "why not make it easier for everyone?" This is my little 'revenge'. Hope it will be useful for you also.
+> I failed my google interview couple months ago. It's my fault. I didn't do my homework and was way too nervous. However, it still made me feel bad. So, I was thinking, "why not make it easier for everyone?" This is my little 'revenge'. Hope it will be useful for you also.
 
 ## Screenshots
 <img width="80%" alt="screen shot 2018-01-01 at 1 54 48 am" src="https://user-images.githubusercontent.com/6364170/34466906-ff28d2ae-ee97-11e7-86d0-5ffdebdd9d4b.png">

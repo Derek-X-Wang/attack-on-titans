@@ -39,7 +39,7 @@ I'll verify aot when I get some time. Or feel free to run aot locally.
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:3000
 npm run dev
 ```
 

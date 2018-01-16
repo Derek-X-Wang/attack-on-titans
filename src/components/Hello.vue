@@ -26,8 +26,8 @@
         <v-card-text>{{dialog.text}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click.stop="dialog.open = false">Disagree</v-btn>
-          <v-btn flat @click.stop="dialog.agree">Agree</v-btn>
+          <v-btn flat @click.stop="dialog.open = false">{{dialog.disagreeBtnText}}</v-btn>
+          <v-btn flat @click.stop="dialog.agree">{{dialog.agreeBtnText}}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -63,6 +63,8 @@ export default {
         open: false,
         headline: 'Placeholder',
         text: 'Placeholder',
+        agreeBtnText: 'agree',
+        disagreeBtnText: 'Disagree',
         agree() {
           console.log('user agreed');
         },
@@ -85,6 +87,8 @@ export default {
       this.dialog.open = true;
       this.dialog.headline = 'Google Account!';
       this.dialog.text = 'Google uses google doc. This app will edit your doc. It needs your authorization.';
+      this.dialog.agreeBtnText = 'agree';
+      this.dialog.disagreeBtnText = 'disagree';
       const that = this;
       this.dialog.agree = () => {
         console.log('user agreed');
@@ -102,6 +106,8 @@ export default {
                 that.dialog.open = true;
                 that.dialog.headline = 'Popup blocked!';
                 that.dialog.text = 'Please enable popup for this site.';
+                that.dialog.agreeBtnText = 'Okay';
+                that.dialog.disagreeBtnText = 'Cancel';
                 that.dialog.agree = () => { that.dialog.open = false; };
               } else {
                 // some other error
@@ -131,7 +137,9 @@ export default {
         that.dialog.open = true;
         that.dialog.headline = 'Popup blocked!';
         that.dialog.text = 'Please enable popup for this site.';
-        this.dialog.agree = () => { that.dialog.open = false; };
+        that.dialog.agreeBtnText = 'Okay';
+        that.dialog.disagreeBtnText = 'Cancel';
+        that.dialog.agree = () => { that.dialog.open = false; };
       } else {
         // some other error
         console.log(error);

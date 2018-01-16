@@ -46,7 +46,13 @@ function InterviewTimer() {
   const tasks = new Queue();
   const artyom = new Artyom();
 
-  this.task = function task(obj) {
+  this.dequeue = (queue) => {
+    if (!queue.isDequeuing) {
+      queue.dequeue();
+    }
+  };
+
+  this.task = (obj) => {
     if (typeof obj === 'string') {
       tasks.queue(() => {
         artyom.say(obj);
@@ -54,26 +60,25 @@ function InterviewTimer() {
     } else {
       tasks.queue(obj);
     }
-    if (!tasks.isDequeuing) {
-      tasks.dequeue();
-    }
+    this.dequeue(tasks);
   };
 
   this.clear = () => {
     tasks.clear();
-    if (!tasks.isDequeuing) {
-      tasks.dequeue();
-    }
+    artyom.fatality().then(() => {
+      console.log('Jarvis succesfully stopped !');
+    }).catch(() => {
+      console.log("Well, this shouldn't happen :) ... ");
+    });
+    this.dequeue(tasks);
   };
 
-  this.wait = function wait(time) {
+  this.wait = (time) => {
     tasks.queue(time);
-    if (!tasks.isDequeuing) {
-      tasks.dequeue();
-    }
+    this.dequeue(tasks);
   };
 
-  this.speak = function speak(text, done) {
+  this.speak = (text, done) => {
     tasks.queue(() => {
       artyom.say(text, {
         onEnd() {
@@ -81,19 +86,7 @@ function InterviewTimer() {
         },
       });
     });
-    if (!tasks.isDequeuing) {
-      tasks.dequeue();
-    }
-  };
-
-  this.speakAndWait = function speakAndWait(texts, wait) {
-    texts.forEach((text) => {
-      artyom.say(text);
-    });
-    tasks.queue(wait);
-    if (!tasks.isDequeuing) {
-      tasks.dequeue();
-    }
+    this.dequeue(tasks);
   };
 }
 

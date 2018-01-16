@@ -1,9 +1,10 @@
+import { pick } from './utils';
+
 
 const names = ['Derek', 'Jack', 'Eric', 'Jim', 'Thomas', 'Matt', 'David'];
-
-function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+console.log('here');
+console.log(pick(names));
+console.log('here');
 
 function ScriptGenerator(initState) {
   let interviewer = initState.interviewer;

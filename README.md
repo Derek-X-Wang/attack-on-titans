@@ -2,6 +2,8 @@
 
 Simualting big tech companies' phone screen, as real as possible.
 
+English | [简体中文](https://github.com/Derek-X-Wang/attack-on-titans/blob/master/README-zh.md)
+
 ### Alpha
 > The app is in alpha testing. Please report to Issues or do a pull request if you encounter any bug.
 
@@ -23,6 +25,10 @@ I'll verify aot when I get some time. Or feel free to run aot locally.
 <img width="80%" alt="screen shot 2018-01-01 at 1 57 00 am" src="https://user-images.githubusercontent.com/6364170/34466909-04e0681a-ee98-11e7-9d91-c44c058809b1.png">
 <img width="80%" alt="screen shot 2018-01-01 at 1 58 10 am" src="https://user-images.githubusercontent.com/6364170/34466910-072cc442-ee98-11e7-92e6-f84f9dd6bd5d.png">
 
+## Supported Phone Screen
+- Google
+
+
 ## Help Wanted!!!
 - The script. It has been quite long since my interview. I don't really remember what exactly my interviewer said... Not only google but also other big tech firms.
 - Developers who has done phone screen with Apple, Amazon, FB and etc. Let's make their interviews easier, together.
@@ -33,7 +39,7 @@ I'll verify aot when I get some time. Or feel free to run aot locally.
 - How to add an interview theme(in progress)
 - Api(in progress)
 
-## Develope
+## Development
 
 ``` bash
 # install dependencies
@@ -47,6 +53,7 @@ npm run dev
 - Simple bot by Dialogflow/api.ai -> 0.4
 - Improve script generator -> 0.4
 - Improve speech synthesis
+- Multilanguage Support for the Report
 - unit test
 - e2e test
 
